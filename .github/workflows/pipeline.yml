@@ -1,0 +1,14 @@
+name: Pipeline
+
+on: [push]
+
+jobs:
+    commits:
+        name: Conventionnal Commit
+        uses: ./.github/workflows/conventional-commits.yml
+    server:
+        name: Server
+        uses: ./.github/workflows/server.yml
+    web:
+        name: Web
+        uses: ./.github/workflows/web.yml

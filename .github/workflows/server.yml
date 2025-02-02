@@ -1,0 +1,13 @@
+## Later on python test !
+name: Check-Server-Compilation
+
+on: [workflow_call]
+
+jobs:
+  check-compilation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Placeholder Python
+        run: echo "Hello !"
+        working-directory: ./news-context-back
+
