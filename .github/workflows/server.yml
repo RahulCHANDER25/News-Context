@@ -9,5 +9,4 @@ jobs:
     steps:
       - name: Placeholder Python
         run: echo "Hello !"
-        working-directory: ./news-context-back
 
