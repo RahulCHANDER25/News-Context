@@ -1,0 +1,46 @@
+services:
+  web:
+    build: ./news-context-front/
+    networks:
+      - public
+    ports:
+      - "3000:3000"
+    volumes:
+     - .:/web
+     - /app/node_modules
+
+  server:
+    build: ./news-context-back
+    env_file:
+      - ./news-context-back/.env
+    networks:
+      - public
+      - private
+    ports:
+      - "8000:8000"
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - 11434:11434
+    volumes:
+      - .:/code
+      - ollama-data:/root/.ollama
+    pull_policy: always
+    tty: true
+    restart: always
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - private
+
+volumes:
+  ollama-data:
+
+networks:
+  public:
+    driver: bridge
+  private:
+    internal: true
+    driver: bridge
