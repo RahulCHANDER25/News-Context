@@ -1,27 +1,29 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import HTTPException
 import requests
 
-router = APIRouter(
-    prefix="/analysis"
-)
+from ...configBack.ollamaBaseURL import ollamaBaseURL
+from ...configBack.headers import headers
 
-headers = {
-    "Content-Type": "application/json"
-}
+from .router import router
+from ...schemas.ollamaBody import OllamaBody
+
 
 @router.post("/journal")
 async def journal_analysis():
     try:
-        res = requests.post(
-            url="http://localhost:11434/api/generate",
-            json={"model": "mistral", "prompt": "Say Hello in a few lines !", "stream": False},
+        response = requests.post(
+            url=f"{ollamaBaseURL}/api/generate",
+            json=OllamaBody(
+                model="mistral",
+                prompt="Say Hello in a few lines !",
+                stream=False
+            ).toJson(),
             headers=headers
         )
-        res.raise_for_status()
-        return {"generated_text": res.json()["response"]}
+        response.raise_for_status()
+        return {"generated_text": response.json()["response"]}
     except requests.RequestException as e:
         print(e)
         raise HTTPException(status_code=500, detail=e.__str__())
-    return {}
 
 ## List current available ollama models

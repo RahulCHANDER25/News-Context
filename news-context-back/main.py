@@ -1,3 +1,8 @@
+from dotenv import load_dotenv
+
+## Later use Settings
+load_dotenv() ## Load env before doing anything !
+
 from fastapi import FastAPI
 from .routes import about
 from .routes.analysis import journal
