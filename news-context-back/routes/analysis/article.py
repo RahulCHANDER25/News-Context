@@ -7,16 +7,21 @@ from ...configBack.headers import headers
 from .router import router
 from ...schemas.ollamaBody import OllamaBody
 from ...schemas.analysis import ArticleBody, AnalysisResponse
-
+from ...tools.URLScrapper import WebSpider
 
 @router.post("/article")
 async def article_analysis(article: ArticleBody):
     try:
+        content = WebSpider(article.articleURL, "html.parser").extract_page()
         response = requests.post(
             url=f"{ollamaBaseURL}/api/generate",
             json=OllamaBody(
                 model=article.model,
-                prompt=f"You are given a article resume it to me in a few lines ! {article.articleURL}", ## Function that scrap the datas in the article
+                prompt=f"\
+                    This is a content of an article:\
+                    {content.content}\
+                    Résume moi l'article en 3 mois\
+                ",
                 stream=False
             ).toJson(),
             headers=headers
