@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 class ArticleBody(BaseModel):
     model: str
-    articleURL: str
+    articleBody: str
 
     def toJson(self) -> Any:
         return json.loads(json.dumps(self.__dict__))

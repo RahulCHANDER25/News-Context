@@ -1,3 +1,4 @@
+import re
 from fastapi import HTTPException
 import requests
 
@@ -12,7 +13,8 @@ from ...tools.URLScrapper import WebSpider
 @router.post("/article")
 async def article_analysis(article: ArticleBody):
     try:
-        content = WebSpider(article.articleURL, "html.parser").extract_page()
+        url = re.search("(?P<url>https?://[^\s]+)", article.articleBody).group("url")
+        content = WebSpider(url, "html.parser").extract_page()
         response = requests.post(
             url=f"{ollamaBaseURL}/api/generate",
             json=OllamaBody(
