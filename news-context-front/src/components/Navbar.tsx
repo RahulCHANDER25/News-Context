@@ -5,7 +5,6 @@ import NewspaperIcon from '@mui/icons-material/Newspaper';
 import { useRouter } from "next/navigation";
 
 
-
 const Navbar = (): JSX.Element => {
   const { push } = useRouter();
   const [tab, setTab] = useState("/analyze/article")

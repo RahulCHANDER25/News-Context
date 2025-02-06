@@ -1,4 +1,5 @@
-import { AppBar, Box, Button, Card, CardActions, CardContent, Divider, Grid2, IconButton, Tab, Tabs, Toolbar, Typography } from "@mui/material";
+'use client'
+import { AppBar, Link, Button, Card, CardActions, CardContent, Divider, Grid2, IconButton, Tab, Tabs, Toolbar, Typography } from "@mui/material";
 
 // Align the 2 part and then a do the redirection
 // Then on the page of Article create a little input text to send it to the back
@@ -30,17 +31,17 @@ export default function Home() {
         <div>
           News Description/Icon
           <br/>
-          <Button variant="contained" color="success">News</Button>
+          <Button variant="contained" color="success" LinkComponent={Link} href="/analyze/article">News</Button>
         </div>
         <div>
         Newspaper Description/Icon
           <br/>
-          <Button variant="contained" color="success">Newspaper</Button>
+          <Button variant="contained" color="success" LinkComponent={Link} href="/analyze/newspaper">Newspaper</Button>
         </div>
         <div>
         Journalist Description/Icon
           <br/>
-          <Button variant="contained" color="success">Journalist</Button>
+          <Button variant="contained" color="success" LinkComponent={Link} href="/analyze/journalist">Journalist</Button>
         </div>
       </Grid2>
     </>
