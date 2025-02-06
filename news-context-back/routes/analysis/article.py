@@ -20,7 +20,7 @@ async def article_analysis(article: ArticleBody):
                 prompt=f"\
                     This is a content of an article:\
                     {content.content}\
-                    Résume moi l'article en 3 mois\
+                    Résume moi l'article en 3 mots\
                 ",
                 stream=False
             ).toJson(),

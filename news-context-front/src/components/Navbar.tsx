@@ -12,7 +12,7 @@ const Navbar = (): JSX.Element => {
   const handleChange = useCallback((path: string) => {
     push(path)
     setTab(path)
-  }, [])
+  }, [push, setTab])
 
   return (
     <AppBar position="static">
