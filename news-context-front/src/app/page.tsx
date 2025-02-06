@@ -30,17 +30,17 @@ export default function Home() {
         <div>
           News Description/Icon
           <br/>
-          <Button variant="outlined" color="success">News</Button>
+          <Button variant="contained" color="success">News</Button>
         </div>
         <div>
         Newspaper Description/Icon
           <br/>
-          <Button variant="outlined" color="success">Newspaper</Button>
+          <Button variant="contained" color="success">Newspaper</Button>
         </div>
         <div>
         Journalist Description/Icon
           <br/>
-          <Button variant="outlined" color="success">Journalist</Button>
+          <Button variant="contained" color="success">Journalist</Button>
         </div>
       </Grid2>
     </>
