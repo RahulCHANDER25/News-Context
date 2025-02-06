@@ -5,7 +5,7 @@ load_dotenv() ## Load env before doing anything !
 
 from fastapi import FastAPI
 from .routes import about
-from .routes.analysis import journal
+from .routes.analysis import article
 
 app = FastAPI()
 
@@ -15,4 +15,4 @@ async def root():
     return {"message": "Hello World !"}
 
 app.include_router(about.router)
-app.include_router(journal.router)
+app.include_router(article.router)
