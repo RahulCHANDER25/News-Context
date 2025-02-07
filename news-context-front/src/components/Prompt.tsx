@@ -17,9 +17,11 @@ export default function Prompt() {
   const submitNewsChat = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setChatInfos([...chatInfos, { person: "me", text: input }])
+    console.log("Prompt is sent")
     sendArticleRequest(input)
-      .then((datas) => {
-        setChatInfos([...chatInfos, { person: "bot", text: datas.generated_text }])
+      .then((res) => {
+        console.log(res.data)
+        setChatInfos([...chatInfos, { person: "bot", text: res.data.generated_text }])
       })
       .catch((err) => {
         console.log(err)
@@ -28,9 +30,9 @@ export default function Prompt() {
 
   return (
     <>  
-      {/* {chatInfos.map((infos) => { // Later on display the whole prompt !
+      {chatInfos.map((infos) => { // Later on display the whole prompt ! => Component ChatArea (readonly datas)
         return <Box key={`${infos.person}-${infos.text}`}><Typography>{infos.person}-{infos.text}</Typography></Box>
-      })} */}
+      })}
       <Box
         component="form"
         className="flex justify-center items-center min-h-screen"
