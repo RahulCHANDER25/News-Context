@@ -36,7 +36,7 @@ For this project, we have chosen our technical stack based on metrics, complexit
 
 ### NextJS
 
-Our Frontend is done using NextJS in Typescript with Material UI.
+Our Frontend is done using `NextJS` in `Typescript` with Material UI.
 
 A few things oriented our choice:
 1. **React-Based**: It builds on React, providing optimized features.
