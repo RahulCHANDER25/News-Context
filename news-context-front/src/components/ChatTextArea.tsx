@@ -1,4 +1,4 @@
-import { Box, Divider, Icon, Stack, Typography } from "@mui/material";
+import { Box, Divider, Stack, Typography } from "@mui/material";
 import { ChatInfos } from "./types/ChatInfos";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
