@@ -1,41 +1,36 @@
 'use client'
 import ChatBox from "@/components/ChatBox";
 import { Done } from "@mui/icons-material";
-import { Box, IconButton, Typography } from "@mui/material";
-import { FormEvent, useState } from "react";
+import { Box, IconButton } from "@mui/material";
+import { FormEvent, useCallback, useState } from "react";
 import { sendArticleRequest } from "@/api/sendPrompt"
+import ChatTextArea from "./ChatTextArea";
+import { ChatInfos } from "./types/ChatInfos";
 
-interface ChatInfos {
-  person: "me" | "bot",
-  text: string
-}
 
 export default function Prompt() {
   const [input, setInput] = useState("")
   const [chatInfos, setChatInfos] = useState<ChatInfos[]>([])
 
-  const submitNewsChat = async (e: FormEvent<HTMLFormElement>) => {
+  const submitNewsChat = useCallback((e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setChatInfos([...chatInfos, { person: "me", text: input }])
-    console.log("Prompt is sent")
+    setChatInfos((prev) => [...prev, { person: "me", text: input }])
     sendArticleRequest(input)
       .then((res) => {
-        console.log(res.data)
-        setChatInfos([...chatInfos, { person: "bot", text: res.data.generated_text }])
+        console.log(res.data, chatInfos.length)
+        setChatInfos((prev) => [...prev, { person: "bot", text: res.data.generated_text }])
       })
       .catch((err) => {
         console.log(err)
       })
-  }
+  }, [chatInfos, input])
 
   return (
-    <>  
-      {chatInfos.map((infos) => { // Later on display the whole prompt ! => Component ChatArea (readonly datas)
-        return <Box key={`${infos.person}-${infos.text}`}><Typography>{infos.person}-{infos.text}</Typography></Box>
-      })}
+    <>
+      <ChatTextArea chats={chatInfos}/>
       <Box
         component="form"
-        className="flex justify-center items-center min-h-screen"
+        className="flex justify-center items-center"
         onSubmit={submitNewsChat}
       >
         <ChatBox setInput={(newInput: string) => { setInput(newInput) }} />
