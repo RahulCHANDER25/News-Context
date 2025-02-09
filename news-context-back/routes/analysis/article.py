@@ -25,11 +25,11 @@ async def article_analysis(article: ArticleBody):
             url=f"{settings.ollama_base_URL}/api/generate",
             json=OllamaBody(
                 model=article.model,
-                prompt=f"\
+                prompt=f'\
                     This is a content of an article:\
                     {content.content if content != None else ""}\
                     Resume me this article in 20 words\
-                ",
+                ',
                 stream=True
             ).toJson(),
             headers=settings.headers
