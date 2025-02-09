@@ -21,6 +21,7 @@ async def article_analysis(article: ArticleBody):
         else:
             content = WebSpider(url[0], "html.parser").extract_page()
         print(content, url)
+        print(settings.ollama_base_URL)
         response = requests.post(
             url=f"{settings.ollama_base_URL}/api/generate",
             json=OllamaBody(
@@ -32,7 +33,7 @@ async def article_analysis(article: ArticleBody):
                 ',
                 stream=True
             ).toJson(),
-            headers=settings.headers
+            headers=settings.headersReq
         )
         response.raise_for_status()
         return AnalysisResponse(generated_text=iterate_lines(response)).toJson()
