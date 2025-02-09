@@ -3,6 +3,8 @@ services:
     build: ./news-context-front/
     networks:
       - public
+    env_file:
+      - ./news-context-back/.env.prod
     ports:
       - "3000:3000"
     volumes:
@@ -12,7 +14,7 @@ services:
   server:
     build: ./news-context-back
     env_file:
-      - ./news-context-back/.env
+      - ./news-context-back/.env.prod
     networks:
       - public
       - private
@@ -22,7 +24,7 @@ services:
   ollama:
     image: ollama/ollama:latest
     ports:
-      - 11434:11434
+      - 11434:4242
     volumes:
       - .:/code
       - ollama-data:/root/.ollama
@@ -32,8 +34,12 @@ services:
     environment:
       - OLLAMA_KEEP_ALIVE=24h
       - OLLAMA_HOST=0.0.0.0
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    entrypoint: ["/code/script/run-ollama.sh"]
     networks:
-      - private
+      - public
 
 volumes:
   ollama-data:
@@ -42,5 +48,4 @@ networks:
   public:
     driver: bridge
   private:
-    internal: true
     driver: bridge
