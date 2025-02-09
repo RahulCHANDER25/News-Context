@@ -1,11 +1,8 @@
-import json
 import re
 from fastapi import HTTPException
 import requests
 
-from ...configBack.ollamaBaseURL import ollamaBaseURL
-from ...configBack.urlRegex import urlRegex
-from ...configBack.headers import headers
+from ...configBack.getSettings import getSettings
 
 from .router import router
 from ...schemas.ollamaBody import OllamaBody
@@ -16,7 +13,8 @@ from ...tools.IterateLines import iterate_lines
 @router.post("/article")
 async def article_analysis(article: ArticleBody):
     try:
-        url = re.findall(urlRegex, article.articleBody)
+        settings = getSettings()
+        url = re.findall(settings.url_regex, article.articleBody)
 
         if len(url) == 0:
             content = None
@@ -24,7 +22,7 @@ async def article_analysis(article: ArticleBody):
             content = WebSpider(url[0], "html.parser").extract_page()
         print(content, url)
         response = requests.post(
-            url=f"{ollamaBaseURL}/api/generate",
+            url=f"{settings.ollama_base_URL}/api/generate",
             json=OllamaBody(
                 model=article.model,
                 prompt=f"\
@@ -34,7 +32,7 @@ async def article_analysis(article: ArticleBody):
                 ",
                 stream=True
             ).toJson(),
-            headers=headers
+            headers=settings.headers
         )
         response.raise_for_status()
         return AnalysisResponse(generated_text=iterate_lines(response)).toJson()
