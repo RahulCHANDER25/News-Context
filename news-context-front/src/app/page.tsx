@@ -33,16 +33,6 @@ export default function Home() {
           <br/>
           <Button variant="contained" color="success" LinkComponent={Link} href="/analyze/article">News</Button>
         </div>
-        <div>
-        Newspaper Description/Icon
-          <br/>
-          <Button variant="contained" color="success" LinkComponent={Link} href="/analyze/newspaper">Newspaper</Button>
-        </div>
-        <div>
-        Journalist Description/Icon
-          <br/>
-          <Button variant="contained" color="success" LinkComponent={Link} href="/analyze/journalist">Journalist</Button>
-        </div>
       </Grid2>
     </>
   )

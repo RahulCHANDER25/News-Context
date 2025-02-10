@@ -50,8 +50,6 @@ export default function Navbar(): JSX.Element {
             <Tabs value={tab} textColor="inherit" onChange={(_: React.SyntheticEvent, path: string) => handleChange(path)}>
               <Tab label="Home" value="/" />
               <Tab label="News" value="/analyze/article" />
-              <Tab label="Newspaper" value="/analyze/newspaper" />
-              <Tab label="Journalist" value="/analyze/journalist" />
             </Tabs>
           </Box>
         </Toolbar>
