@@ -1,10 +1,10 @@
 services:
   web:
-    build: ./news-context-front/
+    build: ./web/
     networks:
       - public
     env_file:
-      - ./news-context-back/.env.prod
+      - ./backend/.env.prod
     ports:
       - "3000:3000"
     volumes:
@@ -12,9 +12,9 @@ services:
      - /app/node_modules
 
   server:
-    build: ./news-context-back
+    build: ./backend
     env_file:
-      - ./news-context-back/.env.prod
+      - ./backend/.env.prod
     networks:
       - public
       - private
