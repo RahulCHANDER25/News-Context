@@ -1,18 +1,25 @@
 services:
   web:
-    build: ./web/
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: web
     networks:
       - public
     env_file:
-      - ./backend/.env.prod
+      - ./web/.env.prod
     ports:
-      - "3000:3000"
+      - '3000:3000'
     volumes:
-     - .:/web
+     - ./web:/app
      - /app/node_modules
+     - /app/.next
 
-  server:
-    build: ./backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
     env_file:
       - ./backend/.env.prod
     networks:
@@ -20,6 +27,8 @@ services:
       - private
     ports:
       - "8000:8000"
+    volumes:
+      - ./backend:/app
 
   ollama:
     image: ollama/ollama:latest
