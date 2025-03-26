@@ -1,0 +1,15 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: nc-backend-service
+  labels:
+    app: news-context-backend
+spec:
+  selector:
+    app: news-context-backend
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 8000
+      # nodePort: 31110 # Letting Kubernetes choose the nodePort
+  type: LoadBalancer

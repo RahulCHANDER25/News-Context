@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nc-backend-deployment # nc = news context
+  labels:
+    app: news-context-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: news-context-backend
+  template:
+    metadata:
+      labels:
+        app: news-context-backend
+    spec:
+      containers:
+        - name:
+          image: rahulchander25/news-context-backend
+          ports:
+            - containerPort: 8000
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
