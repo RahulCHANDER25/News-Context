@@ -3,6 +3,7 @@ services:
     build:
       context: ./web
       dockerfile: Dockerfile
+    image: 'rahulchander25/news-context-web'
     container_name: web
     networks:
       - public
@@ -19,6 +20,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    image: 'rahulchander25/news-context-backend'
     container_name: backend
     env_file:
       - ./backend/.env.prod
@@ -26,7 +28,7 @@ services:
       - public
       - private
     ports:
-      - "8000:8000"
+      - '8000:8000'
     volumes:
       - ./backend:/app
 
@@ -46,7 +48,7 @@ services:
     dns:
       - 8.8.8.8
       - 8.8.4.4
-    entrypoint: ["/code/script/run-ollama.sh"]
+    entrypoint: ['/code/script/run-ollama.sh']
     networks:
       - public
 
