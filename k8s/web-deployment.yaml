@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: nc-web-deployment
+  labels:
+    app: news-context-web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: news-context-web
+  template:
+    metadata:
+      labels:
+        app: news-context-web
+    spec:
+      containers:
+        - name:
+          image: rahulchander25/news-context-web
+          ports:
+            - containerPort: 3000

@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama
+spec:
+  selector:
+    matchLabels:
+      name: ollama
+  template:
+    metadata:
+      labels:
+        name: ollama
+    spec:
+      containers:
+      - name: ollama
+        image: ollama/ollama:latest
+        command: ['/code/script/run-ollama.sh']
+        ports:
+          - protocol: TCP
+            name: http
+            containerPort: 11434
+        envFrom:
+          - configMapRef:
+              name: ollama-config
+        volumeMounts:
+        - name: code-volume
+          mountPath: /code
+        - name: ollama-data
+          mountPath: /root/.ollama
+      volumes:
+        - name: code-volume
+          hostPath:
+            path: .
+        - name: ollama-data
+          persistentVolumeClaim:
+            claimName: ollama-data-pvc
+      dnsConfig:
+        nameservers:
+          - 8.8.8.8
+          - 8.8.4.4

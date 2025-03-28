@@ -19,6 +19,7 @@ spec:
           image: rahulchander25/news-context-backend
           ports:
             - containerPort: 8000
+              name: http
           resources:
             limits:
               memory: "512Mi"

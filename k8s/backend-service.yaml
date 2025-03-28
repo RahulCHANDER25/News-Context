@@ -9,7 +9,8 @@ spec:
     app: news-context-backend
   ports:
     - protocol: TCP
+      name: http
       port: 5000
       targetPort: 8000
-      # nodePort: 31110 # Letting Kubernetes choose the nodePort
+      nodePort: 31110 # Comment to let Kubernetes choose the nodePort
   type: LoadBalancer
