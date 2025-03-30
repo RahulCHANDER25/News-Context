@@ -3,11 +3,11 @@ kind: Service
 metadata:
   name: ollama
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     name: ollama
   ports:
   - port: 11434
-    name: http
-    targetPort: http
+    name: ollama
+    targetPort: 11434
     protocol: TCP

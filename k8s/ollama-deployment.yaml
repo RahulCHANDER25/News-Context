@@ -14,26 +14,25 @@ spec:
       containers:
       - name: ollama
         image: ollama/ollama:latest
-        command: ['/code/script/run-ollama.sh']
+        command: ['/scripts/run-ollama.sh']
         ports:
-          - protocol: TCP
-            name: http
-            containerPort: 11434
+          - containerPort: 11434
         envFrom:
           - configMapRef:
               name: ollama-config
         volumeMounts:
-        - name: code-volume
-          mountPath: /code
         - name: ollama-data
           mountPath: /root/.ollama
+        - name: run-ollama-scripts
+          mountPath: "/scripts"
       volumes:
-        - name: code-volume
-          hostPath:
-            path: .
         - name: ollama-data
           persistentVolumeClaim:
             claimName: ollama-data-pvc
+        - name: run-ollama-scripts
+          configMap:
+            name: ollama-config
+            defaultMode: 0500
       dnsConfig:
         nameservers:
           - 8.8.8.8

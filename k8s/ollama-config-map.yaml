@@ -5,3 +5,13 @@ metadata:
 data:
   OLLAMA_KEEP_ALIVE: '24h'
   OLLAMA_HOST: '0.0.0.0'
+  run-ollama.sh: |
+    #!/bin/sh
+    echo -e "Serving Ollama"
+    ollama serve
+
+    echo -e "Pulling Mistral"
+    ollama pull mistral
+
+    echo -e "Running Mistral"
+    ollama run mistral
