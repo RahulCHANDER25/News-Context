@@ -1,24 +1,46 @@
 'use client'
 
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Card, Typography, TextField, IconButton } from '@mui/material'
-import SendIcon from '@mui/icons-material/Send'
+import { Button, Card, Typography } from '@mui/material'
 
-import ChatMessage from '../components/ChatMessage'
 import ContextCard from '../components/ContextCard'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
+import ChatInput from '../components/ChatInput'
+import ChatList from '../components/ChatList'
 import type { Message, ContextData } from '../components/types/ChatTypes'
 import { sendArticleRequest } from '../api/sendPrompt'
 
-const nowTime = () => new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+// Initial intro messages and contexts (outside component)
+import type { Role } from '../components/types/ChatTypes'
+
+const INTRO_MESSAGES = [
+  {
+    id: 'm1',
+    role: 'bot' as Role,
+    text: 'Welcome to News Context — ask about any article or paste a link!',
+  },
+  {
+    id: 'm2',
+    role: 'user' as Role,
+    text: 'Tell me about the recent climate summit',
+  },
+]
 
 const Home: React.FC = () => {
-  // mock initial messages
-  const [messages, setMessages] = useState<Message[]>([
-    { id: 'm1', role: 'bot', text: 'Welcome to News Context — ask about any article or paste a link!', time: nowTime() },
-    { id: 'm2', role: 'user', text: 'Tell me about the recent climate summit', time: nowTime() },
-  ])
+  // Start with empty, set initial messages with real time after mount
+  const [messages, setMessages] = useState<Message[]>([])
+  // Set initial messages with current time after mount (client only)
+  useEffect(() => {
+    if (messages.length === 0) {
+      const now = new Date()
+      setMessages([
+        { ...INTRO_MESSAGES[0], time: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+        { ...INTRO_MESSAGES[1], time: new Date(now.getTime()).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) },
+      ])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   // contexts keyed by message id, can be empty
   const [contexts, setContexts] = useState<Record<string, ContextData>>({
@@ -45,7 +67,7 @@ const Home: React.FC = () => {
     },
   })
 
-  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(messages[messages.length - 1].id)
+  const [selectedMessageId, setSelectedMessageId] = useState<string | null>(messages[messages.length - 1]?.id)
   const [input, setInput] = useState('')
   const [contextInput, setContextInput] = useState('')
   const [showContextMobile, setShowContextMobile] = useState(false)
@@ -76,7 +98,11 @@ const Home: React.FC = () => {
   async function sendMessage() {
     if (!input.trim()) return
     const id = `m${Date.now()}`
-    const userMsg: Message = { id, role: 'user', text: input.trim(), time: nowTime() }
+    // Only generate time on client
+    const time = typeof window !== 'undefined'
+      ? new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      : ''
+    const userMsg: Message = { id, role: 'user', text: input.trim(), time }
     setMessages((s) => [...s, userMsg])
     setInput('')
 
@@ -102,20 +128,26 @@ const Home: React.FC = () => {
     try {
       const res = await sendArticleRequest(userMsg.text)
       const botId = `m${Date.now() + 1}`
+      const botTime = typeof window !== 'undefined'
+        ? new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : ''
       const botMsg: Message = {
         id: botId,
         role: 'bot',
         text: res.data.generated_text || 'No response from API.',
-        time: nowTime(),
+        time: botTime,
       }
       setMessages((s) => [...s, botMsg])
     } catch (err) {
       const botId = `m${Date.now() + 1}`
+      const botTime = typeof window !== 'undefined'
+        ? new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        : ''
       const botMsg: Message = {
         id: botId,
         role: 'bot',
         text: 'Error: Could not get response from API.',
-        time: nowTime(),
+        time: botTime,
       }
       console.error(err)
       setMessages((s) => [...s, botMsg])
@@ -149,56 +181,8 @@ const Home: React.FC = () => {
                 </Typography>
               </div>
 
-              <div ref={messagesRef} className="flex-1 p-4 overflow-y-auto space-y-2 bg-[length:400px]" style={{ minHeight: 320 }}>
-                {messages.map((m) => (
-                  <ChatMessage key={m.id} message={m} onSelect={(msg: Message) => setSelectedMessageId(msg.id)} />
-                ))}
-              </div>
-
-              {/* Input area */}
-              <div className="p-4 border-t bg-gradient-to-r from-white to-white/60">
-                <div className="flex gap-2 items-center mb-2">
-                  <TextField
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="Ask about the article..."
-                    variant="outlined"
-                    fullWidth
-                    size="small"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault()
-                        sendMessage()
-                      }
-                    }}
-                    inputProps={{
-                      style: {
-                        borderRadius: '12px',
-                        background: 'linear-gradient(180deg,#fff,#fbfbfb)',
-                      },
-                    }}
-                  />
-                  <IconButton color="primary" onClick={sendMessage} aria-label="send message" size="large" className="bg-gradient-to-r from-indigo-500 to-cyan-400 text-white shadow-md hover:scale-105 transition-transform">
-                    <SendIcon />
-                  </IconButton>
-                </div>
-                <div className="flex gap-2 items-center">
-                  <TextField
-                    value={contextInput}
-                    onChange={(e) => setContextInput(e.target.value)}
-                    placeholder="Optional: Add context for this message (title)"
-                    variant="outlined"
-                    fullWidth
-                    size="small"
-                    inputProps={{
-                      style: {
-                        borderRadius: '12px',
-                        background: 'linear-gradient(180deg,#fff,#fbfbfb)',
-                      },
-                    }}
-                  />
-                </div>
-              </div>
+              <ChatList messages={messages} onSelect={(msg) => setSelectedMessageId(msg.id)} messagesRef={messagesRef} />
+              <ChatInput input={input} setInput={setInput} contextInput={contextInput} setContextInput={setContextInput} onSend={sendMessage} />
             </section>
 
             {/* Right column (context) */}

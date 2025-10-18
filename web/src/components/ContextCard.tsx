@@ -3,7 +3,6 @@ import { Card, CardContent, Typography, Avatar, Button, Tooltip } from '@mui/mat
 import { ContextData } from './types/ChatTypes'
 
 export default function ContextCard({ ctx }: { ctx: ContextData | null }) {
-  // Always render a card, show default/empty state if no context
   return (
     <Card className="w-full hover:shadow-lg transition-shadow">
       <CardContent>
@@ -57,5 +56,4 @@ export default function ContextCard({ ctx }: { ctx: ContextData | null }) {
       </CardContent>
     </Card>
   )
-// ...no trailing bracket
 }
