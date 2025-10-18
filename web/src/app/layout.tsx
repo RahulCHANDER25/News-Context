@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,17 +17,17 @@ export const metadata: Metadata = {
   description: "Context you News with this app !",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`min-h-screen bg-app-paper font-sans text-gray-900 antialiased ${geistSans.variable} ${geistMono.variable}`}
+        style={{
+          background: 'linear-gradient(180deg,#fffdf6,#fbf7ee)',
+          backgroundImage:
+            "radial-gradient(circle at 10% 10%, rgba(0,0,0,0.02) 0,#fff 12%), radial-gradient(circle at 90% 90%, rgba(0,0,0,0.015) 0,#fff 15%)",
+        }}
       >
-        <Navbar></Navbar>
         {children}
       </body>
     </html>

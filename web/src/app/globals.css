@@ -3,21 +3,36 @@
 @tailwind utilities;
 
 :root {
-  --background: #151875;
-  --foreground: #3a1da0;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0892d0;
-    --foreground: #3a1da0;
-  }
+  --app-bg: #fffdf6;
+  --app-bg2: #fbf7ee;
+  --app-paper: #fffdf6;
+  --app-shadow: 0 6px 24px rgba(15,23,42,0.06);
+  --app-header: #0f4c81;
+  --app-accent: #c7d2fe;
+  --app-text: #22223b;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: var(--font-geist-sans, Arial, Helvetica, sans-serif);
+  min-height: 100vh;
+}
+
+.bg-app-paper {
+  background: var(--app-paper);
+}
+
+.soft-shadow {
+  box-shadow: var(--app-shadow);
+}
+
+.card-style {
+  max-width: 600px;
+  width: 100%;
+  background: var(--app-paper);
+  box-shadow: var(--app-shadow);
+  border-radius: 1rem;
 }
 
 .center-container {
@@ -25,9 +40,4 @@ body {
   justify-content: center;
   align-items: center;
   height: 75vh;
-}
-
-.card-style {
-  max-width: 600px;
-  width: 100%;
 }
