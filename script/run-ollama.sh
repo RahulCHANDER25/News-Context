@@ -1,9 +1,10 @@
 #!/bin/sh
 
-ollama serve &
+echo -e "Serving Ollama"
+ollama serve
 
-sleep 5
-
+echo -e "Pulling Mistral"
 ollama pull mistral
 
+echo -e "Running Mistral"
 ollama run mistral
